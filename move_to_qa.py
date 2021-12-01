@@ -32,8 +32,8 @@ def main():
         token = f.read().strip()
 
     jira = JIRA('https://issues.redhat.com', token_auth=token)
-    for issue in args.issues:
-        issue = jira.issue(issue)
+    for issue_key in args.issues:
+        issue = jira.issue(issue_key)
 
         available_transitions = [t['id'] for t in jira.transitions(issue)]
         if QA_HANDOVER_TRANSITION_ID not in available_transitions:
@@ -46,7 +46,7 @@ def main():
         }
         jira.transition_issue(issue, QA_HANDOVER_TRANSITION_ID,
                               fields=transition_fields)
-        print(f'{issue} successfully handed over to QE.')
+        print(f'{issue_key} successfully handed over to QE.')
 
 
 if __name__ == '__main__':
