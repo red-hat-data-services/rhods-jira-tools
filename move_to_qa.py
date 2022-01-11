@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import sys
 
 from jira import JIRA
 
@@ -32,13 +31,20 @@ def main():
         token = f.read().strip()
 
     jira = JIRA('https://issues.redhat.com', token_auth=token)
-    for issue_key in args.issues:
+    issues_to_move = sorted(set(args.issues))
+    for issue_key in issues_to_move:
         issue = jira.issue(issue_key)
 
+        current_status = issue.fields.status
+        if str(current_status) != 'Resolved':
+            print((f'Issue {issue_key} is not currently in the "Resolved" '
+                   'state. Please progress it to resolved before attempting '
+                   'to progress it to "Ready for QA".'))
+            continue
         available_transitions = [t['id'] for t in jira.transitions(issue)]
         if QA_HANDOVER_TRANSITION_ID not in available_transitions:
-            print('This issue cannot be transitioned to the "Ready for QA" state. Exiting...')
-            sys.exit(1)
+            print('This issue cannot be transitioned to the "Ready for QA" state.')
+            continue
 
         transition_fields = {
             'fixVersions': [{'name': args.fix_version}],
