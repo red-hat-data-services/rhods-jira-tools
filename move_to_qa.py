@@ -36,6 +36,10 @@ def main():
         issue = jira.issue(issue_key)
 
         current_status = issue.fields.status
+        if str(current_status) == 'Ready for QA':
+            print((f'Issue {issue_key} is already in the "Ready for QA" '
+                   'state. Skipping.'))
+            continue
         if str(current_status) != 'Resolved':
             print((f'Issue {issue_key} is not currently in the "Resolved" '
                    'state. Please progress it to resolved before attempting '
