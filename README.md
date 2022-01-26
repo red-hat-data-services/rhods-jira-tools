@@ -26,8 +26,7 @@ This script is pretty barebones right now. Some enhancements that
 would be nice:
 
 1. Error checking in general
-2. Validation to ensure that an issue is in the resolved state
-3. Validation to ensure that an issue has acks
+2. Validation to ensure that an issue has acks
 
 # ack_checker.py
 
