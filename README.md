@@ -2,6 +2,25 @@
 
 A collection of tools for managing Jira issues for the RHODS project
 
+# get_release_issues.py
+
+This script returns all the issues in a specific release.
+
+## Usage
+
+```bash
+python get_release_issues.py \
+  --token-file /path/to/file/with/jira/personal/token \
+  --release "The release to get all the issues from" # e.g. RHODS_1.6.0_GA
+```
+
+In combination with `awk` it can be used to format the input of the scripts
+below.
+
+```bash
+python get_release_issues.py ... | awk '{ printf " --issue %s", $1 }'
+```
+
 # move_to_qa.py
 
 This script handles transitioning a given Jira issue to the "Ready for QA"
